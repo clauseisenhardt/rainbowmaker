@@ -1,0 +1,66 @@
+<!-- 
+<p>The Rainbow Maker1</p>
+<nav class="navbar navbar-default">
+  <p>The Rainbow Maker2</p>
+
+    <div class="navbar-header navbar">
+      <a routerLink="/" class="navbar-brand" >The Rainbow Maker</a>
+      <span class="pull-right">
+        <img
+          [src]="headerBarUrl"
+          alt="FlyingBat"
+          class="img-responsive"
+          style="max-height: 50px;">
+      </span>
+    </div>
+
+      <ul class="nav navbar-nav">
+        <li routerLinkActive="active" *ngIf="userIsAuthenticated">
+          <a routerLink="/photos">Bat Photos</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="!userIsAuthenticated">
+          <a routerLink="/auth">Authenticate</a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="/species">Bat Species</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li *ngIf="userIsAuthenticated">
+          <a style="cursor: pointer;" (click)="onLogout()">Logout: {{ userEmail }}</a>
+        </li>
+
+        <li class="dropdown" appDropdown>
+          <a style="cursor: pointer;" class="dropdown-toggle" role="button">
+            About
+          </a>
+          <ul class="dropdown-menu">
+            <a class="col-lg-12">An Angular Webpage for making Rainbows<br>
+              Upload image and add a rainbow to it!<br>
+              <br>
+            </a>
+          </ul>
+        </li>
+      </ul>
+   
+</nav> -->
+
+<mat-toolbar color="primary">
+  <h1>The Rainbow Maker</h1>
+  <span><a routerLink="/">Posts</a></span>
+  <span class="spacer"></span>  <ul>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
+    </li>
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
+    </li>
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">Signup</a>
+    </li>
+    <li *ngIf="userIsAuthenticated">
+      <button mat-button (click)="onLogout()">Logout</button>
+    </li>
+  </ul>
+</mat-toolbar>

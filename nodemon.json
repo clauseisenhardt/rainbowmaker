@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_ATLAS_PW": "YnRnnv8rbBm24Be6",
+    "JWT_KEY": "secret_this_should_be_longer",
+    "PORT": 3300
+  }
+}
