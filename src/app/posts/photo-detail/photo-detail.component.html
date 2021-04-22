@@ -1,9 +1,7 @@
 <!-- <script src='../../../assets/js/SimpleImage.js'></script> -->
 
 <div *ngIf="!isPhotoLoading">
-
-  <div class="row">
-  <!-- <div class="col-md-8">
+  <!-- <div class="row">
     <h2>{{ photo.title }}</h2>
     <p>Description: {{ photo.content }}</p>
     <img
@@ -12,24 +10,9 @@
       class="img-responsive"
       style="max-height: 1000px;">
   </div> -->
-
   <hr>
-
-  <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Manage Photo</button>
-  <mat-menu #menu="matMenu">
-    <button mat-button (click)="onEditPhoto()">Edit Photo</button>
-    <button mat-button (click)="onDeletePhoto()">Delete Photo</button>
-  </mat-menu>
-  <button mat-raised-button color="accent" (click)="onRainbowIt()">Rainbow it!</button>
-  <button mat-raised-button color="warn" (click)="onCurveIt()">cuRve it!</button>
-
-</div>
-
-<hr>
-<div class="row">
-
-  <div class="col-xs-4" *ngIf="base64ImageLoaded">
-  
+  <div class="row" *ngIf="base64ImageLoaded">
+    <div class="col-xs-6">
       <a>Loaded Image</a>
       <img
         [src]="base64Image"
@@ -37,8 +20,19 @@
         class="img-responsive"
         style="max-width: auto;">
     </div>
-
-    <div class="col-xs-4"  *ngIf="rainbowReady === true">
+    <div class="col-xs-6">
+      <button mat-raised-button color="primary" style="margin-right:20px; margin-bottom:20px" [matMenuTriggerFor]="menu">Manage Photo</button>
+      <mat-menu #menu="matMenu">
+        <button mat-button (click)="onEditPhoto()">Edit Photo</button>
+        <button mat-button (click)="onDeletePhoto()">Delete Photo</button>
+      </mat-menu>
+      <button mat-raised-button color="accent" style="margin-right:20px; margin-bottom:20px" (click)="onRainbowIt()">Rainbow it!</button>
+      <button mat-raised-button color="warn" style="margin-right:20px; margin-bottom:20px" (click)="onCurveIt()">cuRve it!</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+        <div class="col-xs-6"  *ngIf="rainbowReady === true">
       <a>Rainbow Image</a>
       <img
         [src]="rainbowImage"
@@ -47,7 +41,7 @@
         style="max-width: auto;">
     </div>
 
-    <div class="col-xs-4"  *ngIf="curvedRainbowReady === true">
+    <div class="col-xs-6"  *ngIf="curvedRainbowReady === true">
       <a>Curved Rainbow Image</a>
       <img
         [src]="curvedRainbowImage"
@@ -56,8 +50,5 @@
         style="max-width: auto;">
     </div>
   </div>
-
+  <hr>
 </div>
-<hr>
-  
-<!-- <canvas id="ConvImageCanv" width="50px"></canvas> -->
