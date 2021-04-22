@@ -53,9 +53,7 @@ mongoose.connect(mongoDbConnectStr)
 app.use(bodyParser.json());
 // url parsing is not used by our app - just an example more
 app.use(bodyParser.urlencoded({ extended: false }));
-imagePath = path.join(__dirname, "images");
-console.log("Images redirected to: " + imagePath);
-app.use("/image", express.static(imagePath));
+
 if (SINGLE_APP_DEPLOYMENT) {
   app.use("/", express.static(path.join(__dirname, "angular")));
 }
@@ -72,7 +70,9 @@ app.use((req, res, next) => {
   );
   next();
 });
-
+imagePath = path.join(__dirname, "images");
+console.log("Images redirected to: " + imagePath);
+app.use("/image", express.static(imagePath));
 app.use("/api/posts", postRoutes);
 app.use("/api/user", userRoutes);
 // Used if app is deployed from here too
