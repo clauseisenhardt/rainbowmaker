@@ -1,12 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { PostsService } from '../posts.service';
 import { Post } from '../post.model';
 
 // Using javascript import from src/asset/js/rainbow.js
 declare function doRainbow(image): any;
 declare function doRealRainbow(image): any;
+declare function doRealRainbow(image,radius:number,horisontalShift:number,verticalShift:number,thickness:number): any;
 @Component({
   selector: 'app-photo-detail',
   templateUrl: './photo-detail.component.html',
@@ -16,17 +19,26 @@ export class PhotoDetailComponent implements OnInit {
   @Input() photo: Post;
   @Input() index: number;
   postId;
-
   isPhotoLoading = true;
   
   rainbowReady = false;
   curvedRainbowReady = false;
+  altRainbowReady = false;
   rainbowImage: any;
   curvedRainbowImage: any;
+  altCurvedRainbowImage: any
+
+  // Rainbow parameters  
+  radius = 1.0;
+  horisontalShift = 0.0;
+  verticalShift = 0.0;
+  thicknessScale = 1.0;
   
   // Not used now
   localImage: any;
   convertedImage: string;
+
+  curveParametersForm: FormGroup;
 
   constructor(
     public postService: PostsService,
@@ -37,6 +49,7 @@ export class PhotoDetailComponent implements OnInit {
   ngOnInit() {
     console.log("PhotoDetailComponent:ngOnInit");
     this.isPhotoLoading = true;
+    this.initForm();
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId'))
@@ -104,9 +117,31 @@ export class PhotoDetailComponent implements OnInit {
     this.curvedRainbowImage = doRealRainbow(this.base64Image);
     //console.log(this.convertedImage);
     this.curvedRainbowReady = true;
+
     console.log("onRainbowIt: doRainbow end");
   }
- 
+
+  onSpecialCurves() {
+    console.log("onSpecialCurves: doRainbow start");
+    this.radius = this.curveParametersForm.value.radius;
+    this.horisontalShift = this.curveParametersForm.value.horisontalShift;
+    this.verticalShift = this.curveParametersForm.value.verticalShift;
+    this.thicknessScale = this.curveParametersForm.value.thicknessScale;
+
+    console.log("Parameters: ");
+    console.log("   Radius =     " + this.radius);
+    console.log("   Horisontal = " + this.horisontalShift);
+    console.log("   Vertical =   " + this.verticalShift);
+    console.log("   thickness =  " + this.thicknessScale);
+
+    this.altCurvedRainbowImage = doRealRainbow(this.base64Image,
+      this.radius,this.horisontalShift,this.verticalShift,this.thicknessScale);
+    //console.log(this.convertedImage);
+    this.altRainbowReady = true;
+    console.log("onSpecialCurves: doRainbow end");
+  }
+
+  
   private getImageFromService(imageUrl: string) {
     console.log("getImageFromService: start");
     this.postService.getImageData(imageUrl).subscribe(blob => {
@@ -133,43 +168,68 @@ export class PhotoDetailComponent implements OnInit {
      console.log("createImageFromBlob: end");
   }
 
-// Test get metodes
-base64Image: any;
-base64ImageLoaded = false;
+  // Test get metodes
+  base64Image: any;
+  base64ImageLoaded = false;
 
-private getBase64ImageFromURL(url: string) {
-  return Observable.create((observer: Observer<string>) => {
-    let img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.src = url;
-    if (!img.complete) {
-      img.onload = () => {
+  private getBase64ImageFromURL(url: string) {
+    return Observable.create((observer: Observer<string>) => {
+      let img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.src = url;
+      if (!img.complete) {
+        img.onload = () => {
+          observer.next(this.getBase64Image(img));
+          observer.complete();
+          console.log("getBase64ImageFromURL: Not complete");
+        };
+        img.onerror = (err) => {
+          console.log("getBase64ImageFromURL: Error");
+          observer.error(err);
+        };    console.log("Parameters: ");
+        console.log("   Radius =     " + this.radius);
+        console.log("   Horisontal = " + this.horisontalShift);
+        console.log("   Vertical =   " + this.verticalShift);
+        console.log("   thickness =  " + this.thicknessScale);
+      } else {
         observer.next(this.getBase64Image(img));
         observer.complete();
-        console.log("getBase64ImageFromURL: Not complete");
-      };
-      img.onerror = (err) => {
-        console.log("getBase64ImageFromURL: Error");
-        observer.error(err);
-      };
-    } else {
-      observer.next(this.getBase64Image(img));
-      observer.complete();
-      console.log("getBase64ImageFromURL: Complete");
-    }
-  });
-}
+        console.log("getBase64ImageFromURL: Complete");
+      }
+    });
+  }
 
-private getBase64Image(img: HTMLImageElement) {
-  var canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
-  var ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
-  var dataURL = canvas.toDataURL("image/png");
-  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-}
+  private getBase64Image(img: HTMLImageElement) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+  }
 
+  private initForm() {
+    this.radius = 1.0;
+    this.horisontalShift = 0.0;
+    this.verticalShift = 0.0;
+    this.thicknessScale = 1.0;
 
+    this.curveParametersForm = new FormGroup({
+      radius: new FormControl(this.radius, [Validators.required]),
+      horisontalShift: new FormControl(this.horisontalShift, Validators.required),
+      verticalShift: new FormControl(this.verticalShift, Validators.required),
+      thicknessScale: new FormControl(this.thicknessScale, Validators.required)
+    });
+  }
 
+  onParamChange(){
+    console.log("Parametes changed!")
+    
+    console.log("Parameters: ");
+    console.log("   Radius =     " + this.curveParametersForm.value.radius);
+    console.log("   Horisontal = " + this.curveParametersForm.value.horisontalShift);
+    console.log("   Vertical =   " + this.curveParametersForm.value.verticalShift);
+    console.log("   thickness =  " + this.curveParametersForm.value.thicknessScale);
+  }
 }

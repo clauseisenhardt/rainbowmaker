@@ -150,9 +150,9 @@ function CirclePoint( X, x0, y0, r ) {
   return Y;
 }
 
-function RainbowPoints( width, heigth, radius, thickness=5) {
-  var x0=width/2;
-  var y0=heigth - radius - 5*thickness - thickness/2;
+function RainbowPoints( width, heigth, radius, horisontalShift=0.0, verticalShift=0.0) {
+  var x0 = (width/2) + (width/2)*horisontalShift;
+  var y0 = (heigth - radius) + radius*verticalShift;
   var X = [];
   var i;
   for (i=0; i<=width;i++) {
@@ -174,22 +174,26 @@ function FlipPoints(points, height) {
   }
 }
 
-function doRealRainbow() {
-  var c3 = document.getElementById("can3");
+function doRealRainbow(imageData, Radius=1.0, HorisontalShift=0.0, VerticalShift=0.0, ThicknessScale=1.0) {
+  console.log("doRealRainbow: begin");
+  image = new SimpleImage(imageData);
+  console.log("doRealRainbow: image");
+  newImage = new SimpleImage(image.getWidth(), image.getHeight());
+  console.log("doRealRainbow: newImage");
+
   var width = image.getWidth();
   var height = image.getHeight();
-  var thickness = height/12;
-  
-  newImage = new SimpleImage(width, height);
+  var thickness = (height/12)*ThicknessScale;
   
   var X = [];
   var i;
   for (i=0;i<width;i++) {
     X[i] = i;
   }
+  console.log("Rainbow radius: " + Radius);
   //var Y =  CirclePoint( X, 50, 0, 50 );
   //console.log("(x,y): (" + X[1] + "," + Y[1] + ")");
-  var Y = RainbowPoints(width, height, width*1.2, thickness*0);
+  var Y = RainbowPoints(width, height, width*Radius, HorisontalShift, VerticalShift);
   console.log("(x,y): (" + X[10] + "," + Y[10] + ")");
   FlipPoints(Y, height);
   console.log("(x,y): (" + X[10] + "," + Y[10] + ")");

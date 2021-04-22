@@ -1,6 +1,6 @@
 h1 {
   margin: 50px;
-  color: black;
+  color: indigo;
 }
 
 ul {
@@ -18,3 +18,4 @@ ul {
 .spacer {
   flex: 1 1 auto;
 }
+

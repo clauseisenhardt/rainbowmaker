@@ -47,11 +47,22 @@
 </nav> -->
 
 <mat-toolbar color="primary">
-  <h1>The Rainbow Maker</h1>
-  <span><a routerLink="/">Images</a></span>
+  <!-- <h1>The Rainbow Maker</h1> -->
+  <h1>
+  <div contenteditable>
+    <span style="color: red">Th</span>
+    <span style="color: orange">e R</span>
+    <span style="color: yellow">ai</span>
+    <span style="color: green">nb</span>
+    <span style="color: blue">ow</span>
+    <span style="color: indigo"> Ma</span>
+    <span style="color: violet">ker</span>
+  </div>
+  </h1>
+  <span><h1 routerLink="/">Images</h1></span>
   <span class="spacer"></span>  <ul>
     <li *ngIf="userIsAuthenticated">
-      <a mat-button routerLink="/posts/create" routerLinkActive="mat-accent">Upload Image</a>
+      <a mat-button  style="color: violet" routerLink="/posts/create" routerLinkActive="mat-accent">Upload Image</a>
     </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
@@ -60,7 +71,7 @@
       <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">Signup</a>
     </li>
     <li *ngIf="userIsAuthenticated">
-      <button mat-button (click)="onLogout()">Logout</button>
+      <a mat-button style="color: violet" (click)="onLogout()">Logout</a>
     </li>
   </ul>
 </mat-toolbar>
