@@ -23,14 +23,14 @@
   </mat-expansion-panel>
 </mat-accordion> -->
 
-<hr>
+<!-- <hr> -->
 <div class="row">
   <div class="col-xs-12">
     <app-photo-item
       *ngFor="let photoEl of posts; let i = index"
       [photo]="photoEl"
       [id]="photoEl.id"></app-photo-item>
-      <hr><hr>
+      <hr>
       <mat-paginator [length]="totalPosts"
       [pageSize]="postsPerPage"
       [pageSizeOptions]="pageSizeOptions"
