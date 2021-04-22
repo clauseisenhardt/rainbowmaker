@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Observable, Observer } from 'rxjs';
 import { PostsService } from '../posts.service';
 import { Post } from '../post.model';
 
 // Using javascript import from src/asset/js/rainbow.js
 declare function doRainbow(image): any;
-
+declare function doRealRainbow(image): any;
 @Component({
   selector: 'app-photo-detail',
   templateUrl: './photo-detail.component.html',
@@ -17,7 +18,13 @@ export class PhotoDetailComponent implements OnInit {
   postId;
 
   isPhotoLoading = true;
-  photoConverterActive = false;
+  
+  rainbowReady = false;
+  curvedRainbowReady = false;
+  rainbowImage: any;
+  curvedRainbowImage: any;
+  
+  // Not used now
   localImage: any;
   convertedImage: string;
 
@@ -65,24 +72,41 @@ export class PhotoDetailComponent implements OnInit {
   }
 
   private onLoadPhoto() {
-    this.photoConverterActive = true;
+    this.rainbowReady = false;
+    this.curvedRainbowReady = false;
+
     console.log("onLoadPhoto: start");
     console.log("Load Photo: " + this.photo.imagePath);
+    //this.getImageFromService(this.photo.imagePath);
 
-    this.getImageFromService(this.photo.imagePath);
+    this.getBase64ImageFromURL(this.photo.imagePath).subscribe(base64data => {
+      //console.log(base64data);
+      this.base64Image = 'data:image/jpg;base64,' + base64data;
+      this.base64ImageLoaded = true;
+      console.log("Base64 image loaded.");
+    });
+  
     console.log("onLoadPhoto: end");
   }
 
   onRainbowIt() {
     console.log("onRainbowIt: doRainbow start");
-    console.log(this.localImage);
-    let image = new Image(this.localImage);
-    this.convertedImage = doRainbow(image);//this.localImage);
-    console.log(this.convertedImage);
-    this.photoConverterActive = false;
+
+    this.rainbowImage = doRainbow(this.base64Image);
+    //console.log(this.convertedImage);
+    this.rainbowReady = true;
     console.log("onRainbowIt: doRainbow end");
   }
 
+  onCurveIt() {
+    console.log("onRainbowIt: doRainbow start");
+
+    this.curvedRainbowImage = doRealRainbow(this.base64Image);
+    //console.log(this.convertedImage);
+    this.curvedRainbowReady = true;
+    console.log("onRainbowIt: doRainbow end");
+  }
+ 
   private getImageFromService(imageUrl: string) {
     console.log("getImageFromService: start");
     this.postService.getImageData(imageUrl).subscribe(blob => {
@@ -90,7 +114,7 @@ export class PhotoDetailComponent implements OnInit {
 
       console.log("getImageFromService: loading finished");
     }, error => {
-      this.photoConverterActive = false;
+      this.rainbowReady = false;
       console.log(error);
     });
   }
@@ -108,4 +132,44 @@ export class PhotoDetailComponent implements OnInit {
      }
      console.log("createImageFromBlob: end");
   }
+
+// Test get metodes
+base64Image: any;
+base64ImageLoaded = false;
+
+private getBase64ImageFromURL(url: string) {
+  return Observable.create((observer: Observer<string>) => {
+    let img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = url;
+    if (!img.complete) {
+      img.onload = () => {
+        observer.next(this.getBase64Image(img));
+        observer.complete();
+        console.log("getBase64ImageFromURL: Not complete");
+      };
+      img.onerror = (err) => {
+        console.log("getBase64ImageFromURL: Error");
+        observer.error(err);
+      };
+    } else {
+      observer.next(this.getBase64Image(img));
+      observer.complete();
+      console.log("getBase64ImageFromURL: Complete");
+    }
+  });
+}
+
+private getBase64Image(img: HTMLImageElement) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+
+
 }

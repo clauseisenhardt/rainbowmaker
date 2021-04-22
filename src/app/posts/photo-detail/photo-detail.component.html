@@ -1,9 +1,9 @@
 <!-- <script src='../../../assets/js/SimpleImage.js'></script> -->
 
-<hr>
 <div *ngIf="!isPhotoLoading">
-<div class="row">
-  <div class="col-md-8">
+
+  <div class="row">
+  <!-- <div class="col-md-8">
     <h2>{{ photo.title }}</h2>
     <p>Description: {{ photo.content }}</p>
     <img
@@ -11,53 +11,53 @@
       alt="{{ photo.title }}"
       class="img-responsive"
       style="max-height: 1000px;">
-  </div>
-<!-- </div>
-<div class="row"> -->
-  <div class="col-md-4">
-  <!-- </div>
-  <div class="col-xs-4"> -->
-    <!-- <div
-      class="btn-group"
-      appDropdown>
-      <button
-        type="button"
-        class="btn btn-primary dropdown-toggle">
-        Manage Photo <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a style="cursor: pointer;" (click)="onEditPhoto()">Edit Photo</a></li>
-        <li><a style="cursor: pointer;" (click)="onDeletePhoto()">Delete Photo</a></li>
-        <li><a style="cursor: pointer;" (click)="onLoadPhoto()">Load Photo</a></li>
-     </ul>
-    </div>
-    <hr> -->
-  <button mat-raised-button color="accent" (click)="onRainbowIt()">Rainbow it!</button>
+  </div> -->
 
   <hr>
+
   <button mat-raised-button color="primary" [matMenuTriggerFor]="menu">Manage Photo</button>
   <mat-menu #menu="matMenu">
     <button mat-button (click)="onEditPhoto()">Edit Photo</button>
     <button mat-button (click)="onDeletePhoto()">Delete Photo</button>
   </mat-menu>
-  <hr>
-</div>
-</div>
-<div class="row" *ngIf="photoConverterActive">
+  <button mat-raised-button color="accent" (click)="onRainbowIt()">Rainbow it!</button>
+  <button mat-raised-button color="warn" (click)="onCurveIt()">cuRve it!</button>
 
-  <div class="row">
+</div>
 
-    <div class="col-xs-6">
+<hr>
+<div class="row">
+
+  <div class="col-xs-4" *ngIf="base64ImageLoaded">
+  
+      <a>Loaded Image</a>
+      <img
+        [src]="base64Image"
+        alt="Loaded image"
+        class="img-responsive"
+        style="max-width: auto;">
+    </div>
+
+    <div class="col-xs-4"  *ngIf="rainbowReady === true">
       <a>Rainbow Image</a>
       <img
-        [src]="convertedImage"
-        alt="{{ photo.title }}"
+        [src]="rainbowImage"
+        alt="Rainbow of {{ photo.title }}"
         class="img-responsive"
-        style="max-width: 250px;">
+        style="max-width: auto;">
+    </div>
+
+    <div class="col-xs-4"  *ngIf="curvedRainbowReady === true">
+      <a>Curved Rainbow Image</a>
+      <img
+        [src]="curvedRainbowImage"
+        alt="Curved rainbow of {{ photo.title }}"
+        class="img-responsive"
+        style="max-width: auto;">
     </div>
   </div>
-  <hr>
-  
-</div>
 
+</div>
+<hr>
+  
 <!-- <canvas id="ConvImageCanv" width="50px"></canvas> -->
