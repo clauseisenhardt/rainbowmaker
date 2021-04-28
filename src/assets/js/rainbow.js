@@ -128,12 +128,22 @@ function Determinant( a, b, c ) {
   return D;
 }
 
-function CirclePoint( X, x0, y0, r ) {
+function CirclePoints( X, x0, y0, r ) {
+  // Cirkel Formular: (x - x0)^2 + (y - y0)^2 = r^2,
+  // (x0, y0) is cirkel center and r is radius
+  // 
+  // Formular for value y:
+  // y^2 + y0^2 - 2*y*y0 + x^2 + x0^2 - 2*x*x0 = r^2
+  // Rewrite
+  // y^2 - 2*y*y0 + y0^2 + x^2 + x0^2 - 2*x*x0 - r^2 = 0
+  // Solving y:
+  // a = 1, b = -2*y0, c = y0^2 + x^2 + x0^2 - 2*x*x0 - r^2 
+  // y = (-b + sqrt(D)) / 2*a, where D is then Determinant and
+  // 
   var a = 1;
   var b = -2*y0;
-  var K = x0*x0 + y0*y0 - r*r;
-  //console.log("K=" + K);
-  
+  var K = x0*x0 + y0*y0 - r*r; // Constant part of c
+
   var Y = X;
   
   var i = 0;
@@ -159,7 +169,7 @@ function RainbowPoints( width, heigth, radius, horisontalShift=0.0, verticalShif
     X[i] = i;
   }
   
-  var Y = CirclePoint(X, x0, y0, radius);
+  var Y = CirclePoints(X, x0, y0, radius);
   
   return Y;
 }
@@ -183,7 +193,7 @@ function doRealRainbow(imageData, Radius=1.0, HorisontalShift=0.0, VerticalShift
 
   var width = image.getWidth();
   var height = image.getHeight();
-  var thickness = (height/12)*ThicknessScale;
+  var thickness = (height/10)*ThicknessScale;
   
   var X = [];
   var i;
@@ -194,14 +204,11 @@ function doRealRainbow(imageData, Radius=1.0, HorisontalShift=0.0, VerticalShift
   //var Y =  CirclePoint( X, 50, 0, 50 );
   //console.log("(x,y): (" + X[1] + "," + Y[1] + ")");
   var Y = RainbowPoints(width, height, width*Radius, HorisontalShift, VerticalShift);
-  console.log("(x,y): (" + X[10] + "," + Y[10] + ")");
+  //console.log("(x,y): (" + X[10] + "," + Y[10] + ")");
   FlipPoints(Y, height);
-  console.log("(x,y): (" + X[10] + "," + Y[10] + ")");
-  
-    
-  var C=["c","b","g","y","r"];
-  
-   var cnt = 0;
+  //console.log("(x,y): (" + X[10] + "," + Y[10] + ")");
+   
+  var cnt = 0;
   for (var pix of image.values()){
     var avg = (pix.getRed() + pix.getGreen() + pix.getBlue())/3;
     var newPix = newImage.getPixel(pix.getX(),pix.getY());
