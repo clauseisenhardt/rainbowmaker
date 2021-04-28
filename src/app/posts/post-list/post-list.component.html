@@ -24,19 +24,24 @@
 </mat-accordion> -->
 
 <!-- <hr> -->
-<div class="row">
+<div class="row" *ngIf="totalPosts > 0 && !isLoading">
   <!-- <div class="col-xs-6"> -->
     <app-photo-item
       *ngFor="let photoEl of posts; let i = index"
-      [photo]="photoEl"
-      [id]="photoEl.id"></app-photo-item>
-      <hr>
-      <mat-paginator [length]="totalPosts"
-      [pageSize]="postsPerPage"
+        [photo]="photoEl"
+        [id]="photoEl.id">
+    </app-photo-item>
+    <hr>
+    <mat-paginator [length]="totalPosts"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
       [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]=true
       (page)="onChangePage($event)"
-      *ngIf="posts.length > 0"></mat-paginator>
-      <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">No Posts added jet!</p>
+      *ngIf="totalPosts > 0">
+    </mat-paginator>
+
+    <p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">No Posts added jet!</p>
       
     <!-- </div> -->
   

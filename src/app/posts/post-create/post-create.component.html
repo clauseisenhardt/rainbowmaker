@@ -1,7 +1,7 @@
 <h2>Create post</h2>
 <!-- <textarea rows="6" [value]="newPost" #postInput></textarea> -->
 <mat-card>
-  <app-loading-spinner></app-loading-spinner>
+  <app-loading-spinner *ngIf="isloading"></app-loading-spinner>
   <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isloading">
     <mat-form-field>
       <input matInput

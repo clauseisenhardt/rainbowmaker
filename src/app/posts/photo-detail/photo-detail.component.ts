@@ -80,8 +80,11 @@ export class PhotoDetailComponent implements OnInit {
   }
 
   onDeletePhoto() {
-    // this.photoService.deletePhoto(this.id);
-    this.router.navigate(['/posts']);
+    this.postService.deletePost(this.postId).subscribe(() => {
+      this.isPhotoLoading = false;
+      this.router.navigate(['/posts']);
+      this.postService.getPosts();
+    });
   }
 
   private onLoadPhoto() {

@@ -13,7 +13,7 @@ export class PhotoItemComponent implements OnInit {
   @Input() id: number;
 
   ngOnInit() {
-    console.log("PhotoItemComponent:ngOnInit " + this.id);
+    //console.log("PhotoItemComponent:ngOnInit " + this.id);
 
   }
 }

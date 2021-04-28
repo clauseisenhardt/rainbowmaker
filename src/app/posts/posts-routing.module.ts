@@ -21,7 +21,7 @@ const routes: Routes = [
         //resolve: [PhotosResolverService]
       },
       {
-        path: 'edit/:postId',
+        path: ':postId/:edit',
         component: PostCreateComponent,
         //resolve: [PhotosResolverService]
       }

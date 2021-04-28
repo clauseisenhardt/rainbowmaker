@@ -12,12 +12,21 @@ import { environment } from 'src/environments/environment';
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
+  private postsPerPage: number;
+  private currentPage: number;
 
   constructor(private http: HttpClient,
               private router: Router) { }
 
-  getPosts(postsPerPage: number, currentPage: number) {
-    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
+  getPosts(postsPerPage: number = undefined, currentPage: number = undefined) {
+    if(postsPerPage !== undefined) {
+      this.postsPerPage = postsPerPage;
+    }
+    if(currentPage !== undefined) {
+      this.currentPage = currentPage;
+    }
+
+    const queryParams = `?pagesize=${this.postsPerPage}&page=${this.currentPage}`;
     this.http
     .get<{
       message: string,
@@ -81,6 +90,7 @@ export class PostsService {
         console.log(respData.message);
 
         this.router.navigate(["/"]);
+        this.getPosts();
       });
   }
 
@@ -111,6 +121,7 @@ export class PostsService {
       response => {
         this.router.navigate(["/"]);
         console.log('Post Uddated!');
+        this.getPosts();
       }
     );
   }
@@ -118,7 +129,7 @@ export class PostsService {
   deletePost(postId: string) {
     console.log('Post Delete: ' + postId);
     return this.http.delete(
-      environment.backendUrl + 'posts/'+postId);
+      environment.backendUrl + 'posts/' + postId);
   }
 
   private getFilename(str) {
