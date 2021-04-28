@@ -1,4 +1,3 @@
-<!-- <script src='../../../assets/js/SimpleImage.js'></script> -->
 
 <div *ngIf="!isPhotoLoading">
   <!-- <div class="row">
@@ -32,7 +31,7 @@
   </div>
   <hr>
   <div class="row">
-        <div class="col-xs-6"  *ngIf="rainbowReady === true">
+    <div class="col-xs-6"  *ngIf="rainbowReady === true">
       <a>Rainbow Image</a>
       <img
         [src]="rainbowImage"
@@ -50,61 +49,60 @@
         style="max-width: auto;">
     </div>
   </div>
-
-  <div class="row"*ngIf="curvedRainbowReady === true">
-    <hr>
-  <form [formGroup]="curveParametersForm" >
-    <div class="col-xs-6">
-      <button mat-raised-button type="submit" color="warn" style="margin-right:20px; margin-bottom:20px" (click)="onSpecialCurves()">Go Rainbow Berserk!</button>
-      <mat-form-field>
-        <mat-label>Thickness scale</mat-label>
-        <input matInput
-          type="number"
-          formControlName="thicknessScale"
-           placeholder="Scale between 0.1 and 10"
-          >
-          <mat-error *ngIf="curveParametersForm.get('thicknessScale').invalid">Please enter a valid number!</mat-error>
-      </mat-form-field>
-    </div>
-    <div class="col-xs-6">
-    <mat-form-field>
-      <mat-label>Radius</mat-label>
-      <input matInput
-        type="number"
-        formControlName="radius"
-         placeholder="Between 0.1 and 2.0 (Default 1)"
-        >
-        <mat-error *ngIf="curveParametersForm.get('radius').invalid">Please enter a valid number!</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Shift horisontal</mat-label>
-      <input matInput
-        type="number"
-        formControlName="horisontalShift"
-         placeholder="Between -1.0 and 1.0 (Default 0)"
-        >
-        <mat-error *ngIf="curveParametersForm.get('horisontalShift').invalid">Please enter a valid number!</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Shift vertical</mat-label>
-      <input matInput
-        type="number"
-        formControlName="verticalShift"
-         placeholder="Between -1.0 and 1.0 (Default 0)"
-        >
-        <mat-error *ngIf="curveParametersForm.get('verticalShift').invalid">Please enter a valid number!</mat-error>
-    </mat-form-field>
-
-    </div>
-    <div class="col-xs-12"  *ngIf="altRainbowReady === true">
-      <a>Alternative Curved Rainbow Image</a>
-      <img
-        [src]="altCurvedRainbowImage"
-        alt="Alternative curved rainbow of {{ photo.title }}"
-        class="img-responsive"
-        style="max-width: auto;">
-    </div>
-  </form>
-
   <hr>
+  <div class="row"*ngIf="curvedRainbowReady === true">
+    <form [formGroup]="curveParametersForm" >
+      <div class="col-xs-6">
+        <button mat-raised-button type="submit" color="warn" style="margin-right:20px; margin-bottom:20px" (click)="onSpecialCurves()">Go Rainbow Berserk!</button>
+        <mat-form-field>
+          <mat-label>Thickness scale</mat-label>
+          <input matInput
+            type="number"
+            formControlName="thicknessScale"
+             placeholder="Scale between 0.1 and 10"
+            >
+            <mat-error *ngIf="curveParametersForm.get('thicknessScale').invalid">Please enter a valid number!</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-xs-6">
+        <mat-form-field>
+          <mat-label>Radius</mat-label>
+          <input matInput
+            type="number"
+            formControlName="radius"
+             placeholder="Between 0.1 and 2.0 (Default 1)"
+            >
+            <mat-error *ngIf="curveParametersForm.get('radius').invalid">Please enter a valid number!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Shift horisontal</mat-label>
+          <input matInput
+            type="number"
+            formControlName="horisontalShift"
+             placeholder="Between -1.0 and 1.0 (Default 0)"
+            >
+            <mat-error *ngIf="curveParametersForm.get('horisontalShift').invalid">Please enter a valid number!</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Shift vertical</mat-label>
+          <input matInput
+            type="number"
+            formControlName="verticalShift"
+             placeholder="Between -1.0 and 1.0 (Default 0)"
+            >
+            <mat-error *ngIf="curveParametersForm.get('verticalShift').invalid">Please enter a valid number!</mat-error>
+        </mat-form-field>
+      </div>
+      <hr>
+      <div class="col-xs-12"  *ngIf="altRainbowReady === true">
+        <a>Alternative Curved Rainbow Image</a>
+        <img
+          [src]="altCurvedRainbowImage"
+          alt="Alternative curved rainbow of {{ photo.title }}"
+          class="img-responsive"
+          style="max-width: auto;">
+      </div>
+      <hr>
+    </form>
+  </div>
 </div>
