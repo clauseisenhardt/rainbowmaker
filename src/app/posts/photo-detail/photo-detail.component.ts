@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
+import { AuthService } from '../../auth/auth.service';
 
 import { PostsService } from '../posts.service';
 import { Post } from '../post.model';
@@ -40,14 +43,32 @@ export class PhotoDetailComponent implements OnInit {
 
   curveParametersForm: FormGroup;
 
+  // Authentication
+  userIsAuthenticated = false;
+  private authListenerSubs: Subscription;
+  userId: string = null;
+
   constructor(
     public postService: PostsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     console.log("PhotoDetailComponent:ngOnInit");
+    this.userId = this.authService.getUserId();
+    console.log("Authenticated user: " +this.userId);
+
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authListenerSubs = this.authService
+    .getAuthStatusListener()
+    .subscribe(isAuthenticated => {
+      this.userIsAuthenticated = isAuthenticated;
+      this.userId = this.authService.getUserId();
+      console.log("Authenticated user: " +this.userId);
+    });
+
     this.isPhotoLoading = true;
     this.initForm();
 

@@ -12,15 +12,20 @@
   <hr>
   <div class="row" *ngIf="base64ImageLoaded">
     <div class="col-xs-8">
-      <a>Loaded Image</a>
+      <p>Loaded Image name: {{photo.title}}</p>
       <img
         [src]="base64Image"
         alt="Loaded image"
         class="img-responsive"
         style="max-width: auto;">
+      <p>Image path: {{photo.imagePath}}</p>
+      <p>Image creator: {{photo.creator}}</p>
     </div>
     <div class="col-xs-4">
-      <button mat-raised-button color="primary" style="margin-right:20px; margin-bottom:20px" [matMenuTriggerFor]="menu">Manage Photo</button>
+      <button mat-raised-button color="primary"
+        style="margin-right:20px; margin-bottom:20px" 
+        [matMenuTriggerFor]="menu"
+        *ngIf="userIsAuthenticated && userId === photo.creator">Manage Photo</button>
       <mat-menu #menu="matMenu">
         <button mat-button (click)="onEditPhoto()">Edit Photo</button>
         <button mat-button (click)="onDeletePhoto()">Delete Photo</button>

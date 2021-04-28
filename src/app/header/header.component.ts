@@ -10,19 +10,26 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
-  private authListenerSubs: Subscription;
   userEmail = '';
-  headerBarUrl = 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Gro%C3%9Fes_Mausohr.jpg';
+  userId = '';
+  private authListenerSubs: Subscription;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.userIsAuthenticated = this.authService.getIsAuth();
+    this.userEmail = this.authService.getEmail();
+    console.log("User: email = " + this.userEmail);
+    this.userId = this.authService.getUserId();
+    console.log("User: id = " + this.userId);
     this.authListenerSubs = this.authService
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
       this.userEmail = this.authService.getEmail();
+      console.log("User: email = " + this.userEmail);
+      this.userId = this.authService.getUserId();
+      console.log("User: id = " + this.userId);
     });
   }
 
