@@ -11,10 +11,10 @@ const routes: Routes = [
   {
     path: '',
     component: PostsComponent,
-    canActivate: [AuthGuard],
+    
     children: [
       { path: '', component: PhotoStartComponent },
-      { path: 'create', component: PostCreateComponent },
+      { path: 'create', canActivate: [AuthGuard], component: PostCreateComponent },
       {
         path: ':postId',
         component: PhotoDetailComponent,
@@ -22,6 +22,7 @@ const routes: Routes = [
       },
       {
         path: ':postId/:edit',
+        canActivate: [AuthGuard],
         component: PostCreateComponent,
         //resolve: [PhotosResolverService]
       }

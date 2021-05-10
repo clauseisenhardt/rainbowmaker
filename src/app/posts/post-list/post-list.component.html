@@ -25,6 +25,7 @@
 
 <!-- <hr> -->
 <div class="row" *ngIf="totalPosts > 0 && !isLoading">
+  <h3 *ngIf="!userIsAuthenticated">Login to upload images (images are only saved for limited period!)</h3>
   <!-- <div class="col-xs-6"> -->
     <app-photo-item
       *ngFor="let photoEl of posts; let i = index"

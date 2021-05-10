@@ -1,0 +1,37 @@
+version: '3.3'
+services: 
+  rainbow-maker:
+#    build: .
+    image: registry.digitalocean.com/eisman/rainbowmaker:latest
+    restart: always
+    volumes:
+    - ./backend/images:/opt/rainbow_maker/images
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      MONGO_ATLAS_USER: ${MONGO_USERNAME}
+      MONGO_ATLAS_PW: ${MONGO_PASSWORD}
+      JWT_KEY: ${JWT_KEY}
+
+  # mongo:
+  #   image: mongo
+  #   restart: always
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - ${MONGO_ROOT_DIR}:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8082:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
+  #     ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_USERNAME}
+  #     ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_PASSWORD}
+
