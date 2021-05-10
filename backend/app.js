@@ -8,7 +8,7 @@ const userRoutes = require("./routes/user");
 
 const app = express();
 
-SINGLE_APP_DEPLOYMENT = false;
+SINGLE_APP_DEPLOYMENT = true;
 
 // mongodb credentials: user: admin_mean, pw: YnRnnv8rbBm24Be6
 /*
@@ -20,19 +20,22 @@ db.posts.find()
 */
 const user = 'admin_mean';
 //const password = 'YnRnnv8rbBm24Be6';
-const password = process.env.MONGO_ATLAS_PW;
+var password = process.env.MONGO_ATLAS_PW;
+var secret = process.env.JWT_KEY;
 const databaseName = 'meanDb';
-const mongoDbConnectStr = 'mongodb+srv://' + user + ':' + password +
-'@cluster0.cw3t7.mongodb.net/' + databaseName +
-'?retryWrites=true&w=majority';
 
-if (password == '')
+if (password == undefined)
 {
-  console.log('Error - Database password not set');
+  //console.log('Error - Database password not set');
+  console.log('Warning - Use default Database password');
+  password = 'YnRnnv8rbBm24Be6';
   //exit;
 }
-else if (process.env.JWT_KEY == ''){
-  console.log('Error - Database secret not set');
+if (secret == undefined){
+  //console.log('Error - Database secret not set');
+  console.log('Warning - Use default Database secret');
+  secret = 'secret_this_should_be_longer';
+  process.env.JWT_KEY = secret;
   //exit;
 }
 console.log('Database Security parameters: ');
@@ -41,13 +44,16 @@ console.log(' - Database user: ' + user);
 console.log(' - Database password: ' + password);
 console.log(' - Database secret: ' + process.env.JWT_KEY);
 
+const mongoDbConnectStr = 'mongodb+srv://' + user + ':' + password +
+'@cluster0.cw3t7.mongodb.net/' + databaseName +
+'?retryWrites=true&w=majority';
 console.log('Mongo connect: ' + mongoDbConnectStr);
 mongoose.connect(mongoDbConnectStr)
   .then(() => {
     console.log('Connected to database!');
   })
-  .catch(() => {
-    console.log('Connection to database failed!');
+  .catch((err) => {
+    console.log('Connection to database failed!: ' + err);
   });
 
 app.use(bodyParser.json());
