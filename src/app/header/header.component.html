@@ -59,7 +59,10 @@
       <span style="color: violet">ker</span>
     </div>
   </h1>
-  <span><h1 routerLink="/">Images</h1></span>
+  <span>
+    <!-- <h1 routerLink="/">Images</h1> -->
+    <a mat-button  style="color: indigo" routerLink="/posts" routerLinkActive="mat-accent">Images</a>
+  </span>
  <span class="spacer"></span> 
   <ul>
     <li *ngIf="userIsAuthenticated">

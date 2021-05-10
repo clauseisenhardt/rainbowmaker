@@ -73,6 +73,7 @@ exports.getPosts = (req, res, next) => {
   const postQuery = Post.find();
   let fetchedPost;
 
+  console.log("Page size="+pageSize+" page="+currentPage);
   if (pageSize && currentPage) {
     postQuery
       .skip(pageSize * (currentPage - 1) )
