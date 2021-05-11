@@ -26,8 +26,8 @@ RUN mkdir -p /opt/rainbow_maker
 WORKDIR /opt/rainbow_maker
 
 # Copy app code to app dir
-RUN mkdir -p /opt/rainbow_maker/angular
-COPY backend/angular /opt/rainbow_maker/
+#RUN mkdir -p /opt/rainbow_maker/angular
+COPY backend/angular /opt/rainbow_maker/angular
 # Copy server code to server dir
 COPY backend/controllers /opt/rainbow_maker/controllers
 COPY backend/middleware /opt/rainbow_maker/middleware
